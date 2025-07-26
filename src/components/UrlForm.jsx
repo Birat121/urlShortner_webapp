@@ -11,12 +11,17 @@ const UrlForm = () => {
       <Input
         type="url"
         placeholder="URL Here..."
-        className="flex-1 px-48 py-6 text-lg rounded-md border border-gray-600 shadow-sm
-                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        className="w-full max-w-4xl px-4 py-6 text-lg rounded-md border border-gray-600 shadow-sm
+             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
         required
         aria-label="Enter URL"
       />
-      <Button variant="secondary" type="submit" className="px-8 py-6 text-lg rounded-md bg-blue-600 text-white hover:text-black hover:bg-blue-300">
+
+      <Button
+        variant="secondary"
+        type="submit"
+        className="px-8 py-6 text-lg rounded-md bg-blue-600 text-white hover:text-black hover:bg-blue-300"
+      >
         Shorten!
       </Button>
     </form>
@@ -24,4 +29,3 @@ const UrlForm = () => {
 };
 
 export default UrlForm;
-

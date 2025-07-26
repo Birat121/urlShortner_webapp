@@ -34,12 +34,7 @@ const Navbar = () => {
           >
             Login
           </Link>
-          <Link
-            to="/signup"
-            className="px-5 py-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition duration-200 text-sm shadow"
-          >
-            Signup
-          </Link>
+          
         </div>
       </div>
 
@@ -53,13 +48,7 @@ const Navbar = () => {
           >
             Login
           </Link>
-          <Link
-            to="/signup"
-            onClick={() => setMobileMenuOpen(false)}
-            className="w-11/12 max-w-xs text-center px-5 py-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition duration-200 shadow"
-          >
-            Signup
-          </Link>
+          
         </div>
       )}
     </nav>
