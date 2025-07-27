@@ -9,3 +9,39 @@ export async function login({ email, password }) {
 
   return data;
 }
+
+export async function signup({email,password,name,profile_pic}){
+  const filename = `dp-${name.split(" ").join("-")}-${Math.random()}`;
+  
+  const {error:storageError} =await supabase.storage.from("profile_pic").upload(filename,profile_pic);
+
+  if(storageError) throw new Error(storageError.message);
+
+  const { error,data } = await supabase.auth.signup({
+    email,
+    password,
+    options: {
+      data: {
+        name,
+        profile_pic:`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/profile_pic/${filename}`,
+      },
+    },
+  });
+
+  if (error) throw new Error(error.message);
+  
+  return data;
+}
+
+export async function getCurrentUser() {
+  const { data: session, error } = await supabase.auth.getSession();
+  if (!session.session) return null;
+  if (error) throw new Error(error.message);
+  return session.session?.user;
+}
+
+
+export async function logout() {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw new Error(error.message);
+}

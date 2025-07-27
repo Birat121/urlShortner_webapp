@@ -39,12 +39,13 @@ const Login = () => {
     data,
     loading,
     error: loginError,
-    refetch,
+    fn: fetchuser,
   } = useFetch(login, formdata);
 
   useEffect(() => {
     if (error === null && data) {
       navigate(`/dashboard?${longLink ? `createNew=${longLink}` : ""}`);
+      fetchuser();
     }
   }, [data, loginError]);
 
@@ -60,7 +61,7 @@ const Login = () => {
         password: yup.string().required("Password is required"),
       });
       await schema.validate(formdata, { abortEarly: false });
-      await refetch();
+      await fetchuser();
     } catch (e) {
       const newErrors = {};
       e?.inner?.forEach((err) => {
