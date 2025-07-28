@@ -1,0 +1,11 @@
+import supabase from "./supabase";
+export async function getClicks(urlIds) {
+  const { data, error } = await supabase
+    .from("clicks")
+    .select("*")
+    .in("url_id", urlIds);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
