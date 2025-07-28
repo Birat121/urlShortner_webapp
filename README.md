@@ -104,4 +104,8 @@ npm run dev
 
 - [@Birat121](https://github.com/Birat121)
 
+## Deployed in Netlify (still in development)
+
+- https://nepxurlshort.netlify.app/
+
 
