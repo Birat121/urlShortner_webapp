@@ -55,7 +55,7 @@ const LinkCard = ({ url, fetchUrls }) => {
         >
           <Copy />
         </Button>
-        <Button variant={"ghost"} onClick={() => {}}>
+        <Button variant={"ghost"} onClick={downloadImage}>
           <Download />
         </Button>
         <Button variant={"ghost"} onClick={()=>fnDelete().then(()=>fetchUrls())}>
