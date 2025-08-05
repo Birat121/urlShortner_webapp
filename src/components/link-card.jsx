@@ -19,11 +19,10 @@ const LinkCard = ({ url, fetchUrls }) => {
     document.body.removeChild(anchor);
   };
 
-  const { loading: loadingDelete, fn: fnDelete } = useFetch(deleteUrl, url?.id);
-
+  const { loading: loadingDelete, fn: fnDelete } = useFetch(deleteUrl, url.id);
 
   return (
-    <div className="flex flex-col md:flex-row gap-5 border p-4 bg-gray-900 rounded-lg">
+    <div className="flex flex-col md:flex-row gap-5 border p-4 shadow rounded-lg">
       <img
         src={url?.qr}
         className="h-32 object-contain ring ring-blue-500 self-start "
@@ -58,8 +57,12 @@ const LinkCard = ({ url, fetchUrls }) => {
         <Button variant={"ghost"} onClick={downloadImage}>
           <Download />
         </Button>
-        <Button variant={"ghost"} onClick={()=>fnDelete().then(()=>fetchUrls())}>
-         {loadingDelete?<BeatLoader color="#36d7b7" size={8} />: <Trash />}
+        <Button
+          variant={"ghost"}
+          onClick={() => fnDelete().then(() => fetchUrls())}
+          disabled={loadingDelete}
+        >
+          {loadingDelete ? <BeatLoader color="#36d7b7" size={8} /> : <Trash />}
         </Button>
       </div>
     </div>

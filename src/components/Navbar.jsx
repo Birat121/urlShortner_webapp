@@ -11,12 +11,15 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LinkIcon, LogOut } from "lucide-react";
 import { UrlState } from "@/context";
-import useFetch  from "@/hooks/use-fetch";
+import useFetch from "@/hooks/use-fetch";
 import { logout } from "@/db/apiAuth";
 import { BarLoader } from "react-spinners";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const handleLoginClick = () => {
+    navigate("/auth");
+  };
 
   const { user, fetchuser } = UrlState();
 
@@ -36,7 +39,14 @@ const Navbar = () => {
 
           {/* Nav Links */}
           <div className="flex gap-4 items-center">
-            {user ? (
+            {!user ? (
+              <button
+                onClick={handleLoginClick}
+                className="px-5 py-2 rounded-full border border-indigo-600 text-indigo-600 hover:bg-indigo-100 transition text-sm"
+              >
+                Login
+              </button>
+            ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger className="w-10 rounded-full overflow-hidden">
                   <Avatar>
@@ -54,8 +64,8 @@ const Navbar = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Link to="/dashboard" className="flex">
-                    <LinkIcon className="mr-2 h-4 w-4" />
-                    My Links
+                      <LinkIcon className="mr-2 h-4 w-4" />
+                      My Links
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="text-red-600">
@@ -64,7 +74,7 @@ const Navbar = () => {
                       onClick={() => {
                         fnlogout().then(() => {
                           fetchuser();
-                          navigate("/");
+                          navigate("/auth");
                         });
                       }}
                     >
@@ -73,15 +83,6 @@ const Navbar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="px-5 py-2 rounded-full border border-indigo-600 text-indigo-600 hover:bg-indigo-100 transition text-sm"
-                >
-                  Login
-                </Link>
-              </>
             )}
           </div>
         </div>

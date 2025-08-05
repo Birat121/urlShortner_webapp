@@ -15,6 +15,7 @@ import * as yup from "yup";
 import useFetch from "@/hooks/use-fetch";
 import { login } from "@/db/apiAuth";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { UrlState } from "@/context";
 
 const Login = () => {
   const [error, setError] = React.useState([]);
@@ -39,18 +40,18 @@ const Login = () => {
     data,
     loading,
     error: loginError,
-    fn: fetchuser,
+    fn: fnlogin,
   } = useFetch(login, formdata);
+  const { fetchuser } = UrlState();
 
   useEffect(() => {
-    if (error === null && data) {
+    if (loginError === null && data) {
       navigate(`/dashboard?${longLink ? `createNew=${longLink}` : ""}`);
       fetchuser();
     }
   }, [data, loginError]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setError([]);
     try {
       const schema = yup.object().shape({
@@ -61,7 +62,7 @@ const Login = () => {
         password: yup.string().required("Password is required"),
       });
       await schema.validate(formdata, { abortEarly: false });
-      await fetchuser();
+      await fnlogin();
     } catch (e) {
       const newErrors = {};
       e?.inner?.forEach((err) => {
@@ -100,7 +101,7 @@ const Login = () => {
         </CardContent>
         <CardFooter>
           <Button onClick={handleSubmit}>
-            {false ? <BeatLoader size={10} color="#36d7b9" /> : "Login"}
+            {loading ? <BeatLoader size={10} color="#36d7b9" /> : "Login"}
           </Button>
         </CardFooter>
       </Card>

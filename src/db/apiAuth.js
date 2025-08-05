@@ -13,17 +13,17 @@ export async function login({ email, password }) {
 export async function signup({email,password,name,profile_pic}){
   const filename = `dp-${name.split(" ").join("-")}-${Math.random()}`;
   
-  const {error:storageError} =await supabase.storage.from("profile_pic").upload(filename,profile_pic);
+  const {error:storageError} = await supabase.storage.from("profilepic").upload(filename,profile_pic);
 
   if(storageError) throw new Error(storageError.message);
 
-  const { error,data } = await supabase.auth.signup({
+  const { error,data } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: {
         name,
-        profile_pic:`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/profile_pic/${filename}`,
+        profile_pic:`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/profilepic/${filename}`,
       },
     },
   });

@@ -11,6 +11,8 @@ import { Copy, Download, Trash } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import LocationsStats from "@/components/locations-stats";
 import DeviceStats from "@/components/device-stats";
+import { deleteUrl } from "@/db/apiUrls";
+import { Button } from "@/components/ui/button";
 
 const Link = () => {
   const downloadImage = () => {

@@ -3,7 +3,7 @@ import { BarLoader } from "react-spinners";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Filter } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import Error from "@/components/error";
 import useFetch from "@/hooks/use-fetch";
 import { getUrls } from "@/db/apiUrls";
@@ -14,12 +14,7 @@ import CreateLink from "@/components/create-link";
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const { user } = UrlState();
-  const {
-    data: urls,
-    loading,
-    error,
-    fn: fnUrls,
-  } = useFetch(getUrls, user?.id);
+  const { data: urls, loading, error, fn: fnUrls } = useFetch(getUrls, user.id);
   const {
     data: clicks,
     loading: loadingClicks,
@@ -33,14 +28,19 @@ const Dashboard = () => {
     fnUrls();
   }, []);
 
+  const filteredUrls = urls?.filter((url) =>
+    url.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   useEffect(() => {
     if (urls?.length) fnClicks();
   }, [urls?.length]);
 
-  const filteredUrls = urls?.filter((url) => url.title.toLowerCase().includes(searchQuery.toLowerCase()));
   return (
     <div className="flex flex-col gap-8 ">
-      {loading || loadingClicks && <BarLoader width={"100%"} color="#36d7b7" />}
+      {(loading || loadingClicks) && (
+        <BarLoader width={"100%"} color="#36d7b7" />
+      )}
       <div className="grid grid-cols-2 gap-4">
         <Card>
           <CardHeader>
@@ -71,11 +71,11 @@ const Dashboard = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <Filter className="absolute right-3 top-3" />
+        <Filter className="absolute right-3 top-3 p-1" />
       </div>
-      {error && <Error message="No links found" />}
-      {(filteredUrls || []).map((url,i) =>{
-        return <LinkCard key={i} url={url} fetchUrls = {fnUrls} />
+      {error && <Error message={error?.message} />}
+      {(filteredUrls || []).map((url, i) => {
+        return <LinkCard key={i} url={url} fetchUrls={fnUrls} />;
       })}
     </div>
   );

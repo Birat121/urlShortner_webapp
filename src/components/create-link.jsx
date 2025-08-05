@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -27,7 +28,7 @@ const CreateLink = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const longLink = searchParams.get("createNew");
 
-  const [error, setError] = useState([]);
+  const [error, setError] = useState({});
   const [formdata, setFormData] = useState({
     title: "",
     longUrl: longLink ? longLink : "",
@@ -41,32 +42,29 @@ const CreateLink = () => {
   });
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [id]: value,
-    }));
+    setFormData({
+      ...formdata,
+      [e.target.id]: e.target.value,
+    });
   };
+
   const {
     data,
     loading,
     error: createUrlError,
     fn: fnCreateUrl,
-  } = useFetch(
-    createUrl,
-    user ? { ...formdata, user_id: user.id } : null // Pass null or undefined to skip
-  );
+  } = useFetch(createUrl, { ...formdata, user_id: user.id });
 
   useEffect(() => {
-    if (error === null && data) {
+    if (createUrlError === null && data) {
       navigate(`/link/${data[0].id}`);
     }
-  }, [error, data]);
+  }, [createUrlError, data]);
 
   const createNewUrl = async () => {
     setError([]);
     try {
-      schema.validateSync(formdata, { abortEarly: false });
+      await schema.validate(formdata, { abortEarly: false });
       const canvas = ref.current.canvasRef.canvas;
       const blob = await new Promise((resolve) => canvas.toBlob(resolve));
       await fnCreateUrl(blob);
@@ -86,16 +84,19 @@ const CreateLink = () => {
         if (!res) setSearchParams({});
       }}
     >
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="destructive">Create New Link</Button>
       </DialogTrigger>
       <DialogContent className={"sm:max-w-md"}>
         <DialogHeader>
           <DialogTitle className="font-bold text-2xl">Create New</DialogTitle>
+          <DialogDescription>
+            Fill in the form below to create a new shortened link.
+          </DialogDescription>
         </DialogHeader>
 
         {formdata?.longUrl && (
-          <QRCode values={formdata.longUrl} size={200} ref={ref} />
+          <QRCode values={formdata?.longUrl} size={200} ref={ref} />
         )}
         <Input
           id="title"

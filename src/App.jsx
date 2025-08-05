@@ -19,14 +19,14 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: <RequireAuth><Dashboard /> </RequireAuth>,
       },
       {
-        path: "/:id",
+        path: "/auth",
         element: <Auth />,
       },
       {
-        path: "/redirect",
+        path: "/:id",
         element: <Redirect />,
       },
       {

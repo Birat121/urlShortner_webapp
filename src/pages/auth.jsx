@@ -22,7 +22,7 @@ const Auth = () => {
   return (
     <div className="mt-28 flex flex-col items-center gap-10">
       <h1 className="text-4xl font-extrabold">
-        {searchParams.get("createNew") === "login" ? "Please Login First!" : "Login / Signup"}
+        {longLink?.get("createNew") === "login" ? "Please Login First!" : "Login / Signup"}
       
       </h1>
       <Tabs defaultValue="login" className="w-[400px]">
