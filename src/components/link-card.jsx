@@ -6,7 +6,7 @@ import useFetch from "@/hooks/use-fetch";
 import { deleteUrl } from "@/db/apiUrls";
 import { BeatLoader } from "react-spinners";
 
-const LinkCard = ({ url, fetchUrls }) => {
+const LinkCard = ({ url=[], fetchUrls }) => {
   const downloadImage = () => {
     const imageUrl = url?.qr;
     const fileName = url?.title;
