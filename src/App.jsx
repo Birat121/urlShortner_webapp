@@ -8,6 +8,7 @@ import Redirect from "./pages/redirect";
 import Link from "./pages/link";
 import UrlProvider from "./context";
 import RequireAuth from "./components/require-auth";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +39,9 @@ const router = createBrowserRouter([
 ]);
 function App() {
   return (
+    
     <UrlProvider>
+      <Toaster position="top-right" reverseOrder={false} />
       <RouterProvider router={router} />
     </UrlProvider>
   );

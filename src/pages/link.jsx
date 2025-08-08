@@ -46,13 +46,24 @@ const Link = () => {
 
   const { loading: loadingDelete, fn: fnDelete } = useFetch(deleteUrl, id);
 
+  // fetch URL on mount
   useEffect(() => {
     fn();
   }, []);
 
-  if (error) {
-    navigate("/dashboard");
-  }
+  // fetch stats only if url is successfully fetched
+  useEffect(() => {
+    if (!error && loading === false) {
+      fnStats();
+    }
+  }, [loading, error]);
+
+  // handle error-driven redirect (side effect)
+  useEffect(() => {
+    if (error) {
+      navigate("/dashboard");
+    }
+  }, [error]);
 
   let link = "";
   if (url) {
@@ -69,7 +80,7 @@ const Link = () => {
             {url?.title}
           </span>
           <a
-            href={`https://nepxlinkr.com/{link}`}
+            href={`https://nepxlinkr.com/${link}`}
             target="_blank"
             className="text-3xl sm:text-4xl text-blue-400 font-bold hover:underline cursor-pointer"
           >

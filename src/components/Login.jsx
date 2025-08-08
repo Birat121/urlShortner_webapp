@@ -16,6 +16,7 @@ import useFetch from "@/hooks/use-fetch";
 import { login } from "@/db/apiAuth";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { UrlState } from "@/context";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [error, setError] = React.useState([]);
@@ -42,12 +43,18 @@ const Login = () => {
     error: loginError,
     fn: fnlogin,
   } = useFetch(login, formdata);
+
   const { fetchuser } = UrlState();
 
   useEffect(() => {
     if (loginError === null && data) {
+      toast.success("Logged in successfully!");
       navigate(`/dashboard?${longLink ? `createNew=${longLink}` : ""}`);
       fetchuser();
+    }
+
+    if (loginError) {
+      toast.error(loginError.message || "Login failed");
     }
   }, [data, loginError]);
 
@@ -61,16 +68,19 @@ const Login = () => {
           .required("Email is required"),
         password: yup.string().required("Password is required"),
       });
+
       await schema.validate(formdata, { abortEarly: false });
       await fnlogin();
     } catch (e) {
       const newErrors = {};
       e?.inner?.forEach((err) => {
         newErrors[err.path] = err.message;
+        toast.error(err.message); // Show toast for each validation error
       });
       setError(newErrors);
     }
   };
+
   return (
     <div>
       <Card>

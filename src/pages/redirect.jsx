@@ -12,7 +12,7 @@ const Redirect = () => {
 
   const { loading: loadingStats, fn: fnStats } = useFetch(storeClicks, {
     id: data?.id,
-    original_url: data?.original_url,
+    originalUrl: data?.original_url,
   });
 
   useEffect(() => {
