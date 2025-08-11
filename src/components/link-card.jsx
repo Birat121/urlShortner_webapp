@@ -33,7 +33,7 @@ const LinkCard = ({ url=[], fetchUrls }) => {
           {url?.title}
         </span>
         <span className="text-2xl text-blue-400 font-bold hover:underline cursor-pointer">
-          https://nepxlinkr.com/
+          https://nepxurlshort.netlify.app/
           {url?.custome_url ? url?.custome_url : url?.short_url}
         </span>
         <span className="flex items-center gap-1 hover:underline cursor-pointer">
@@ -48,7 +48,7 @@ const LinkCard = ({ url=[], fetchUrls }) => {
           variant={"ghost"}
           onClick={() =>
             navigator.clipboard.writeText(
-              `https://nepxlinkr.com/${url?.short_url}`
+              `https://nepxurlshort.netlify.app/${url?.short_url}`
             )
           }
         >

@@ -81,90 +81,112 @@ const LinkPage = () => {
         <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />
       )}
 
-      <div className="flex flex-col gap-8 sm:flex-row justify-between">
+      <div className="flex flex-col gap-8 lg:flex-row justify-between">
         {/* LEFT - URL Details */}
-        <div className="flex flex-col items-start gap-8 rounded-lg sm:w-2/5">
-          <span className="text-6xl font-extrabold hover:underline cursor-pointer">
+        <div className="flex flex-col gap-6 p-4 rounded-lg bg-white dark:bg-gray-900 shadow-lg sm:w-full lg:w-2/5">
+          <span className="text-3xl sm:text-5xl font-extrabold hover:underline break-words cursor-pointer">
             {url?.title}
           </span>
 
           <a
-            href={`https://nepxlinkr.com/${link}`}
+            href={`https://nepxurlshort.netlify.app/${link}`}
             target="_blank"
-            className="text-3xl sm:text-4xl text-blue-400 font-bold hover:underline cursor-pointer"
+            className="text-lg sm:text-2xl text-blue-500 font-semibold break-all hover:underline"
           >
-            https://nepxlinkr.com/{link}
+            https://nepxurlshort.netlify.app/{link}
           </a>
 
           <a
             href={url?.original_url}
             target="_blank"
-            className="flex items-center gap-1 hover:underline cursor-pointer"
+            className="flex items-center gap-2 text-sm sm:text-base text-gray-600 hover:text-blue-500 hover:underline break-all"
           >
-            <LinkIcon className="p-1" />
+            <LinkIcon className="w-5 h-5" />
             {url?.original_url}
           </a>
 
-          <span className="text-sm font-extralight flex items-end">
+          <span className="text-xs sm:text-sm text-gray-400">
             {url?.created_at ? new Date(url.created_at).toLocaleString() : ""}
           </span>
 
           {/* Action Buttons */}
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button
-              variant={"ghost"}
+              variant="outline"
+              className="flex items-center gap-1 shadow-sm hover:shadow-md"
               onClick={() =>
-                navigator.clipboard.writeText(`https://nepxlinkr.com/${link}`)
+                navigator.clipboard.writeText(`https://nepxurlshort.netlify.app/${link}`)
               }
             >
-              <Copy />
+              <Copy className="w-4 h-4" /> Copy
             </Button>
 
-            <Button variant={"ghost"} onClick={downloadImage}>
-              <Download />
+            <Button
+              variant="outline"
+              className="flex items-center gap-1 shadow-sm hover:shadow-md"
+              onClick={downloadImage}
+            >
+              <Download className="w-4 h-4" /> Download QR
             </Button>
 
-            <Button variant={"ghost"} onClick={handleDelete}>
-              {loadingDelete ? <BeatLoader color="#36d7b7" size={5} /> : <Trash />}
+            <Button
+              variant="destructive"
+              className="flex items-center gap-1 shadow-sm hover:shadow-md"
+              onClick={handleDelete}
+            >
+              {loadingDelete ? (
+                <BeatLoader color="#fff" size={5} />
+              ) : (
+                <Trash className="w-4 h-4" />
+              )}{" "}
+              Delete
             </Button>
           </div>
 
           {/* QR Image */}
           {url?.qr && (
-            <img
-              src={url.qr}
-              alt="qr code"
-              className="w-full self-center sm:self-start ring ring-blue-500 p-1 object-contain"
-            />
+            <div className="flex justify-center sm:justify-start">
+              <img
+                src={url.qr}
+                alt="qr code"
+                className="w-40 sm:w-56 rounded-lg ring ring-blue-500 p-2 object-contain"
+              />
+            </div>
           )}
         </div>
 
         {/* RIGHT - Stats */}
-        <Card className="sm:w-3/5">
+        <Card className="sm:w-full lg:w-3/5 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-4xl font-extrabold">Stats</CardTitle>
+            <CardTitle className="text-2xl sm:text-4xl font-bold">Stats</CardTitle>
           </CardHeader>
 
           {stats && stats.length > 0 ? (
-            <CardContent className="flex flex-col gap-6">
-              <Card>
+            <CardContent className="grid gap-6">
+              <Card className="shadow-sm">
                 <CardHeader>
-                  <CardTitle>Total Clicks</CardTitle>
+                  <CardTitle className="text-lg font-semibold">Total Clicks</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>{stats.length}</p>
+                  <p className="text-2xl font-bold">{stats.length}</p>
                 </CardContent>
               </Card>
 
-              <CardTitle>Location Data</CardTitle>
-              <LocationsStats stats={stats} />
+              <div>
+                <CardTitle className="text-lg font-semibold">Location Data</CardTitle>
+                <LocationsStats stats={stats} />
+              </div>
 
-              <CardTitle>Device Info</CardTitle>
-              <DeviceStats stats={stats} />
+              <div>
+                <CardTitle className="text-lg font-semibold">Device Info</CardTitle>
+                <DeviceStats stats={stats} />
+              </div>
             </CardContent>
           ) : (
-            <CardContent>
-              {loadingStats === false ? "No statistics yet" : "Loading statistics..."}
+            <CardContent className="text-gray-500">
+              {loadingStats === false
+                ? "No statistics yet"
+                : "Loading statistics..."}
             </CardContent>
           )}
         </Card>
@@ -174,4 +196,5 @@ const LinkPage = () => {
 };
 
 export default LinkPage;
+
 
